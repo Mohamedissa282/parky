@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "104422399728",
+    "project_id": "monspot-b29f6",
+    "storage_bucket": "monspot-b29f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104422399728:android:68c98a4f14d8605470ec35",
+        "android_client_info": {
+          "package_name": "com.example.mypost"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkryDeD7lTiFjMCKECeiD3X2zwPe6njMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104422399728:android:e3642ff318dbbb0d70ec35",
+        "android_client_info": {
+          "package_name": "com.example.myspot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkryDeD7lTiFjMCKECeiD3X2zwPe6njMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
