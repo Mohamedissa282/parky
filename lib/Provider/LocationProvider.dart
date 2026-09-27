@@ -10,35 +10,32 @@ class LocationProvider with ChangeNotifier {
   StreamSubscription<Position>? positionStream;
 
   Future<void> getCurrentPosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print("Not enable");
+      print("Service de localisation désactivé");
       return;
     }
-    permission = await Geolocator.checkPermission();
+
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Erreur!');
+        print("Permission refusée");
+        return;
       }
     }
-    if (permission == LocationPermission.whileInUse) {
-      positionStream = Geolocator.getPositionStream().listen((
-        Position? position,
-      ) {
-        userLat = position!.latitude;
-        userLang = position.longitude;
-
-        notifyListeners();
-      });
-    }
+  
+    positionStream = Geolocator.getPositionStream().listen((Position? position) {
+      userLat = position!.latitude;
+      userLang = position.longitude;
+      notifyListeners();
+    });
   }
 
+  @override
   void dispose() {
     positionStream?.cancel();
     super.dispose();
   }
 }
+

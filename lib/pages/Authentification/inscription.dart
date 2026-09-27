@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
-import 'package:mypost/Widget/textFormField.dart';
+import 'package:mypost/Widget/textFormFieldWideget.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/pages/historique_page.dart';
 

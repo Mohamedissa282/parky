@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
-import 'package:mypost/Widget/textFormField.dart';
+import 'package:mypost/Widget/textFormFieldWideget.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/pages/homme.dart';
 import 'package:provider/provider.dart';
