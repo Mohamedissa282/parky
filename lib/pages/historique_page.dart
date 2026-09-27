@@ -56,7 +56,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
         stream: getCarSpots(uui!),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
 
           final docs = snapshot.data!.docs;
@@ -129,7 +129,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                           ),
                                         ),
                                         Text(
-                                          note ?? "sans note",
+                                          note.toString().isNotEmpty
+                                              ? note
+                                              : "Sans note",
                                           style: TextStyle(
                                             color: Colors.grey,
                                             fontSize: 14,
@@ -142,7 +144,14 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                 ),
 
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(uui)
+                                        .collection("car_spots")
+                                        .doc(doc.id)
+                                        .delete();
+                                  },
                                   icon: Icon(Icons.delete),
                                 ),
                               ],
