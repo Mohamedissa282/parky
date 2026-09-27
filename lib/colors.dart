@@ -7,4 +7,5 @@ class ParkyColors {
   static const infoGreenBg = Color(0xFFDCEFD8);
   static const textGrey = Color(0xFF8A8A8A);
   static const borderGrey = Color(0xFFE0DED6);
+  
 }

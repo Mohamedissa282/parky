@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/Widget/textFormField.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/pages/historique_page.dart';
 
 class InscriptionPage extends StatefulWidget {
   const InscriptionPage({super.key});
@@ -16,6 +20,31 @@ class _InscriptionPageState extends State<InscriptionPage> {
   final TextEditingController prenomController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
+  void Registre() async {
+    try {
+      UserCredential cred = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+
+      String uid = cred.user!.uid;
+
+      await FirebaseFirestore.instance.collection("users").doc(uid).set({
+        "nom": nomController.text.trim(),
+        "prenom": prenomController.text.trim(),
+        "createdAt": FieldValue.serverTimestamp(),
+      });
+
+      Navigator.of(context).pushReplacement(
+        (MaterialPageRoute(builder: (context) => ConnexionPage())),
+      );
+    } catch (e) {
+      print("Erreur inscription : $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,18 +93,24 @@ class _InscriptionPageState extends State<InscriptionPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  const Text("Inscription",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-                    const Text("Quelques infos et c'est parti",style: TextStyle(
+                    const Text(
+                      "Inscription",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "Quelques infos et c'est parti",
+                      style: TextStyle(
                         color: ParkyColors.textGrey,
                         fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 20),
 
-                     TextformfieldWideget(
+                    TextformfieldWideget(
                       controller: nomController,
                       hintText: "Entrer votre nom",
 
@@ -83,8 +118,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                     ),
                     const SizedBox(height: 14),
 
-                      TextformfieldWideget(
-                      controller: nomController,
+                    TextformfieldWideget(
+                      controller: prenomController,
                       hintText: "Entrer votre prenom",
 
                       prefixIcon: Icon(Icons.person_2),
@@ -107,27 +142,11 @@ class _InscriptionPageState extends State<InscriptionPage> {
 
                     const SizedBox(height: 18),
 
-                    // Bouton Se connecter
-                    SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ParkyColors.darkGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(26),
-                          ),
-                        ),
-                        child: Text(
-                                'Crer compte',
-                                style: TextStyle(
-                                  color: ParkyColors.limeGreen,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                      ),
+                    Mybutton(
+                      text: "Créer compte",
+                      onPressed: () {
+                        Registre();
+                      },
                     ),
                     const SizedBox(height: 12),
                   ],

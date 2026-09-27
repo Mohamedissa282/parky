@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/Widget/textFormField.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/pages/homme.dart';
+import 'package:provider/provider.dart';
 
 class ConnexionPage extends StatefulWidget {
   const ConnexionPage({super.key});
@@ -16,6 +19,25 @@ class _ConnexionPageState extends State<ConnexionPage> {
   final passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false;
+
+  void login() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+
+      String uui = userCredential.user!.uid;
+      context.read<UserProvider>().setId(uui);
+
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => HommePage()));
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +88,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Bon retour !',
+                      'Connexion',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -104,11 +126,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => HommePage(),
-                            ),
-                          );
+                          login();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ParkyColors.darkGreen,
