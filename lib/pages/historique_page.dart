@@ -1,5 +1,7 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/colors.dart';
@@ -56,7 +58,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
         stream: getCarSpots(uui!),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child:CircularProgressIndicator()
+            );
           }
 
           final docs = snapshot.data!.docs;
@@ -145,12 +149,25 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
                                 IconButton(
                                   onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(uui)
-                                        .collection("car_spots")
-                                        .doc(doc.id)
-                                        .delete();
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.info,
+                                      animType: AnimType.rightSlide,
+                                      title: 'Suppression',
+                                      desc:
+                                          'mohamed vous avez sur pour la suppression ?',
+                                      btnCancelOnPress: () {},
+                                      btnOkOnPress: () {
+                                        FirebaseFirestore.instance
+                                            .collection("users")
+                                            .doc(uui)
+                                            .collection("car_spots")
+                                            .doc(doc.id)
+                                            .delete();
+                                      },
+                                      btnOkText: "Oui",
+                                      btnCancelText: "Non",
+                                    )..show();
                                   },
                                   icon: Icon(Icons.delete),
                                 ),

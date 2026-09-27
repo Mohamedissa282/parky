@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide SafeArea;
 import 'package:geolocator/geolocator.dart';
@@ -97,19 +99,73 @@ class _HommePageState extends State<HommePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => HistoriquePage(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => HistoriquePage(),
+                            ),
+                          );
+                        },
+                        child: Iconcontainer(
+                          color: ParkyColors.darkGreen,
+                          icon: Icons.directions_car_filled,
+                          iconColor: ParkyColors.limeGreen,
                         ),
-                      );
-                    },
-                    child: Iconcontainer(
-                      color: ParkyColors.darkGreen,
-                      icon: Icons.directions_car_filled,
-                      iconColor: ParkyColors.limeGreen,
-                    ),
+                      ),
+                      PopupMenuButton(
+                        child: Iconcontainer(
+                          color: Colors.white,
+                          icon: Icons.person,
+                          iconColor: Colors.black,
+                        ),
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Mohamed",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Mohamedissa@gmail.com",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: "deconnexion",
+                            onTap: () async {
+                              await FirebaseAuth.instance.signOut();
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.logout, color: Colors.red[800]),
+                                SizedBox(width: 8,),
+                                Text(
+                                  "Se déconnecter",
+                                  style: TextStyle(
+                                    color: Colors.red[800],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   SizedBox(height: 6),
                   Container(
@@ -148,8 +204,18 @@ class _HommePageState extends State<HommePage> {
             child: Mycontainerwideget(
               controller: noteController,
               onPressed: () {
-                addPositionCar(context, noteController.text.trim());
-                noteController.clear();
+                //   addPositionCar(context, noteController.text.trim());
+                //noteController.clear();
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.success,
+                  animType: AnimType.rightSlide,
+                  title: 'Succifily',
+                  desc:
+                      'Tres bien mohamed la postion a été enregisté avec succes',
+
+                  btnOkOnPress: () {},
+                )..show();
               },
             ),
           ),

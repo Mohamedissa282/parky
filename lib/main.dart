@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mypost/Provider/CarProvider.dart';
 import 'package:mypost/Provider/LocationProvider.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/firebase_options.dart';
+import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
+import 'package:mypost/pages/acceuilPage.dart';
+import 'package:mypost/pages/homme.dart';
+import 'package:mypost/pages/loading.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -32,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const InscriptionPage(),
+      home: Acceuilpage()
     );
   }
 }

@@ -23,8 +23,12 @@ class _InscriptionPageState extends State<InscriptionPage> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  bool _isLoading = false;
   void Registre() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       UserCredential cred = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: emailController.text.trim(),
@@ -40,11 +44,18 @@ class _InscriptionPageState extends State<InscriptionPage> {
       });
 
       context.read<UserProvider>().setNom(nomController.text.trim());
+
+     setState(() {
+        _isLoading = false;
+     });
       Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );
     } catch (e) {
       print("Erreur inscription : $e");
+      setState(() {
+        _isLoading = false;
+     });
     }
   }
 

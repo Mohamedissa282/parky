@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
@@ -18,10 +19,14 @@ class _ConnexionPageState extends State<ConnexionPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _obscurePassword = true;
-  bool _isLoading = false;
+ bool _isLoading = false;
+
 
   void login() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
             email: emailController.text.trim(),
@@ -29,14 +34,25 @@ class _ConnexionPageState extends State<ConnexionPage> {
           );
 
       String uui = userCredential.user!.uid;
-  
-      context.read<UserProvider>().setId(uui);
 
+      context.read<UserProvider>().setId(uui);
+      setState(() {
+        _isLoading = false;
+      });
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (context) => HommePage()));
+      Center(
+        child: LoadingAnimationWidget.twoRotatingArc(
+          color: Colors.white,
+          size: 200,
+        ),
+      );
     } catch (e) {
       print(e);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -50,6 +66,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               const SizedBox(height: 30),
 
               Container(
