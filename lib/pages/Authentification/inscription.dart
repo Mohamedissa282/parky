@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/pages/historique_page.dart';
+import 'package:provider/provider.dart';
 
 class InscriptionPage extends StatefulWidget {
   const InscriptionPage({super.key});
@@ -37,6 +39,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
         "createdAt": FieldValue.serverTimestamp(),
       });
 
+      context.read<UserProvider>().setNom(nomController.text.trim());
       Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );

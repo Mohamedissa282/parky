@@ -29,6 +29,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
           );
 
       String uui = userCredential.user!.uid;
+  
       context.read<UserProvider>().setId(uui);
 
       Navigator.of(

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide SafeArea;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mypost/Provider/LocationProvider.dart';
@@ -11,7 +11,7 @@ import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/Widget/myContainerWideget.dart';
 import 'package:mypost/colors.dart';
-import 'package:mypost/pages/historique_page.dart';
+import 'package:mypost/pages/historique_page.dart' hide SafeArea;
 import 'package:provider/provider.dart';
 
 class HommePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HommePageState extends State<HommePage> {
             "lat": lat,
             "long": long,
             "note": note,
-            "Date": DateTime.now().toIso8601String(),
+            "date": DateTime.now().toIso8601String(),
           });
 
       print("Voiture enregistrée avec ID : ${docs.id}");
