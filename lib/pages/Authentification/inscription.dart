@@ -18,6 +18,8 @@ class InscriptionPage extends StatefulWidget {
 }
 
 class _InscriptionPageState extends State<InscriptionPage> {
+
+  GlobalKey<FormState> key = new GlobalKey();
   final TextEditingController nomController = new TextEditingController();
   final TextEditingController prenomController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
@@ -44,10 +46,12 @@ class _InscriptionPageState extends State<InscriptionPage> {
       });
 
       context.read<UserProvider>().setNom(nomController.text.trim());
+      context.read<UserProvider>().setEmail(emailController.text.trim());
 
-     setState(() {
+
+      setState(() {
         _isLoading = false;
-     });
+      });
       Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );
@@ -55,7 +59,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
       print("Erreur inscription : $e");
       setState(() {
         _isLoading = false;
-     });
+      });
     }
   }
 
@@ -66,135 +70,161 @@ class _InscriptionPageState extends State<InscriptionPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 15),
-
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: ParkyColors.darkGreen,
-                  borderRadius: BorderRadius.circular(16),
+          child: Form(
+            key: key,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 15),
+            
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: ParkyColors.darkGreen,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Icon(
+                    Icons.directions_car_filled,
+                    color: ParkyColors.limeGreen,
+                    size: 28,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.directions_car_filled,
-                  color: ParkyColors.limeGreen,
-                  size: 28,
+                const SizedBox(height: 18),
+            
+                const Text(
+                  'Créer votre compte',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 18),
-
-              const Text(
-                'Créer votre compte',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                "Votre voiture vous attend, on s'occupe du reste.",
-                style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
-              ),
-              const SizedBox(height: 24),
-
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                const SizedBox(height: 6),
+                const Text(
+                  "Votre voiture vous attend, on s'occupe du reste.",
+                  style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const SizedBox(height: 24),
+            
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Inscription",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        "Quelques infos et c'est parti",
+                        style: TextStyle(
+                          color: ParkyColors.textGrey,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+            
+                      TextformfieldWideget(
+                        controller: nomController,
+                        hintText: "Entrer votre nom",
+            
+                        prefixIcon: Icon(Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Veuillez entrer votre nom";
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 14),
+            
+                      TextformfieldWideget(
+                        controller: emailController,
+                        hintText: "med@gmail.com",
+            
+                        prefixIcon: Icon(Icons.email),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Veuillez entrer votre email";
+                          }
+                          bool email = RegExp(
+                            r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
+                          ).hasMatch(value);
+                          if (!email) {
+                            return "Email not valide";
+                          }
+                        
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      TextformfieldWideget(
+                        controller: passwordController,
+            
+                        hintText: "••••••••",
+                        prefixIcon: Icon(Icons.lock_outline),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Veuillez entrer votre mot de passe";
+                          }
+            
+                          if (value.length < 4) {
+                            return "Le mot de passe doit contenir au moins 4 caractères";
+                          }
+            
+                          
+                        },
+                      ),
+            
+                      const SizedBox(height: 18),
+            
+                      Mybutton(
+                        text: "Créer compte",
+                        onPressed: () {
+                          if(key.currentState!.validate()){
+                                 Registre();
+                          }
+                         
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 35),
+            
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Inscription",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'Avez-vous déja compte ?',
+                      style: TextStyle(color: ParkyColors.textGrey),
                     ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      "Quelques infos et c'est parti",
-                      style: TextStyle(
-                        color: ParkyColors.textGrey,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    TextformfieldWideget(
-                      controller: nomController,
-                      hintText: "Entrer votre nom",
-
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    const SizedBox(height: 14),
-
-                    TextformfieldWideget(
-                      controller: prenomController,
-                      hintText: "Entrer votre prenom",
-
-                      prefixIcon: Icon(Icons.person_2),
-                    ),
-                    const SizedBox(height: 14),
-
-                    TextformfieldWideget(
-                      controller: emailController,
-                      hintText: "med@gmail.com",
-
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                    const SizedBox(height: 14),
-                    TextformfieldWideget(
-                      controller: passwordController,
-
-                      hintText: "••••••••",
-                      prefixIcon: Icon(Icons.lock_outline),
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    Mybutton(
-                      text: "Créer compte",
-                      onPressed: () {
-                        Registre();
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          (MaterialPageRoute(
+                            builder: (context) => ConnexionPage(),
+                          )),
+                        );
                       },
+                      child: const Text(
+                        'Se connecter',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 12),
                   ],
                 ),
-              ),
-              const SizedBox(height: 35),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Avez-vous déja compte ?',
-                    style: TextStyle(color: ParkyColors.textGrey),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                        (MaterialPageRoute(
-                          builder: (context) => ConnexionPage(),
-                        )),
-                      );
-                    },
-                    child: const Text(
-                      'Se connecter',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-            ],
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),

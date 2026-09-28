@@ -45,14 +45,10 @@ class _AcceuilpageState extends State<Acceuilpage> {
             Mybutton(
               text: "Commencer",
               onPressed: () {
-              Navigator.of(context).pushReplacement(
+             Navigator.of(context).pushReplacement(
                   (MaterialPageRoute(builder: (context) => ConnexionPage())),
                 );
-                if (FirebaseAuth.instance.currentUser == Null) {
-                  print("non connecter");
-                } else {
-                  print("connecter");
-                }
+                
               },
             ),
           ],

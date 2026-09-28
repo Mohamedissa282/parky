@@ -13,6 +13,7 @@ import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/Widget/myContainerWideget.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/pages/historique_page.dart' hide SafeArea;
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,8 @@ class _HommePageState extends State<HommePage> {
 
   double lat1 = 0.0;
   double lang1 = 0.0;
-
+  String? nom;
+  String? email;
   Set<Marker> markers = {};
   TextEditingController noteController = TextEditingController();
 
@@ -74,7 +76,8 @@ class _HommePageState extends State<HommePage> {
   Widget build(BuildContext context) {
     lat1 = context.watch<LocationProvider>().userLat;
     lang1 = context.watch<LocationProvider>().userLang;
-
+    nom = context.watch<UserProvider>().UserName;
+    email = context.watch<UserProvider>().UserEmail;
     markers = {
       Marker(
         markerId: MarkerId("user_position"),
@@ -117,6 +120,12 @@ class _HommePageState extends State<HommePage> {
                         ),
                       ),
                       PopupMenuButton(
+                        onSelected: (value) async {
+                          if (value == "deconnexion") {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.of(context).pushReplacement((MaterialPageRoute(builder: (context)=> ConnexionPage())));
+                          }
+                        },
                         child: Iconcontainer(
                           color: Colors.white,
                           icon: Icons.person,
@@ -127,15 +136,13 @@ class _HommePageState extends State<HommePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Mohamed",
+                                Text( nom == null ? "nom non ajouter" : nom!,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(
-                                  "Mohamedissa@gmail.com",
+                                Text( email == null ? "non ajouté" : email!,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold,
@@ -146,13 +153,10 @@ class _HommePageState extends State<HommePage> {
                           ),
                           PopupMenuItem(
                             value: "deconnexion",
-                            onTap: () async {
-                              await FirebaseAuth.instance.signOut();
-                            },
                             child: Row(
                               children: [
                                 Icon(Icons.logout, color: Colors.red[800]),
-                                SizedBox(width: 8,),
+                                SizedBox(width: 8),
                                 Text(
                                   "Se déconnecter",
                                   style: TextStyle(
@@ -204,8 +208,8 @@ class _HommePageState extends State<HommePage> {
             child: Mycontainerwideget(
               controller: noteController,
               onPressed: () {
-                //   addPositionCar(context, noteController.text.trim());
-                //noteController.clear();
+                addPositionCar(context, noteController.text.trim());
+                noteController.clear();
                 AwesomeDialog(
                   context: context,
                   dialogType: DialogType.success,

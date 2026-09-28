@@ -6,6 +6,7 @@ import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
+import 'package:mypost/pages/SaveLocationPage.dart';
 import 'package:provider/provider.dart';
 
 class HistoriquePage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
         .collection("users")
         .doc(uui)
         .collection("car_spots")
-        .orderBy("Date", descending: true)
+        .orderBy("date", descending: true)
         .snapshots();
   }
 
@@ -58,14 +59,21 @@ class _HistoriquePageState extends State<HistoriquePage> {
         stream: getCarSpots(uui!),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-              child:CircularProgressIndicator()
-            );
+            return Center(child: CircularProgressIndicator());
           }
 
           final docs = snapshot.data!.docs;
           if (docs.isEmpty) {
-            return Center(child: Text("Aucun enregistrement"));
+            return Center(
+              child: Text(
+                "Aucun enregistrement",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            );
           }
 
           return ListView.builder(
@@ -77,7 +85,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
               final lat = data['lat'];
               final long = data['long'];
               final note = data['note'];
-              final date = DateTime.parse(data['Date']);
+              final date = DateTime.parse(data['date']);
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -176,9 +184,11 @@ class _HistoriquePageState extends State<HistoriquePage> {
                             SizedBox(height: 12),
                             InkWell(
                               onTap: () {
-                                print("######################################");
-                                print("latitude est : ${lat}");
-                                print("longtude est : ${long}");
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Savelocationpage(lat: lat, long:  long, date: "${date.day}/${date.month}/${date.year} à ${date.hour}:${date.minute}"),
+                                  ),
+                                );
                               },
                               child: Container(
                                 margin: EdgeInsets.only(left: 48),

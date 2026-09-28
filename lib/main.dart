@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Acceuilpage()
+      home: FirebaseAuth.instance.currentUser == null ? Acceuilpage() : HommePage()
     );
   }
 }
