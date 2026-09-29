@@ -29,6 +29,8 @@ void main() async {
   );
 }
 
+final user = FirebaseAuth.instance.currentUser;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -37,7 +39,29 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: FirebaseAuth.instance.currentUser == null ? Acceuilpage() : HommePage()
-    );
+      home: ConnexionPage());
   }
 }
+
+
+/* StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+           builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+          }
+
+         if (snapshot.hasData) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+                final user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                  context.read<UserProvider>().setId(user.uid);
+                }
+        });
+
+      return HommePage();
+    }
+
+     return ConnexionPage();
+  },
+    ));*/

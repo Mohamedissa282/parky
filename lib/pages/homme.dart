@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide SafeArea;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mypost/Provider/LocationProvider.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/IconContainer.dart';
@@ -25,15 +28,65 @@ class HommePage extends StatefulWidget {
 }
 
 class _HommePageState extends State<HommePage> {
-  Future<void> addPositionCar(BuildContext context, String note) async {
+  // gerer l'ajoutation d'une photo
+  File? _image;
+  bool hasPhoto = false;
+  final picker = ImagePicker();
+
+  // fonction pour l'ajoute d'une photo
+  Future<void> _pickPhoto() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        hasPhoto = true;
+        print("################################################################""Photo sélectionnée : ${_image!.path}");
+
+      });
+    }
+  }
+
+  // fonction pour ajouter la photo dans firebase storage
+  Future<String?> uploadPhoto(File? image) async {
+    if (image == null) return null;
+
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child(
+        "car_photos/${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+
+      await storageRef.putFile(image);
+
+      return await storageRef.getDownloadURL();
+    } catch (e) {
+      print("Erreur upload photo: $e");
+      return null;
+    }
+  }
+
+  // fonction pour suppression d'une photos
+  void _removePhoto() {
+    setState(() {
+      _image = null;
+      hasPhoto = false;
+    });
+  }
+
+  // ajouter les donnees dans firestore
+  Future<void> addPositionCar(
+    BuildContext context,
+    String note,
+    File? image,
+  ) async {
     try {
       final uid = context.read<UserProvider>().uid;
       final lat = context.read<LocationProvider>().userLat;
       final long = context.read<LocationProvider>().userLang;
 
-      if (uid == null || lat == null || long == Null) {
+      if (uid == null || lat == null || long == null) {
         print("les donnes sont vide");
       }
+      final imageUrl = await uploadPhoto(image);
 
       final docs = await FirebaseFirestore.instance
           .collection("users")
@@ -44,9 +97,12 @@ class _HommePageState extends State<HommePage> {
             "long": long,
             "note": note,
             "date": DateTime.now().toIso8601String(),
+            "imageUrl": imageUrl,
           });
-
+      
       print("Voiture enregistrée avec ID : ${docs.id}");
+      print("Image reçue dans addPositionCar: $image");
+
     } catch (e) {
       print(e);
     }
@@ -89,7 +145,10 @@ class _HommePageState extends State<HommePage> {
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: LatLng(lat1, lang1)),
+            initialCameraPosition: CameraPosition(
+              target: LatLng(lat1, lang1),
+              
+            ),
             onMapCreated: (controller) => {mapController1 = controller},
 
             markers: markers,
@@ -123,7 +182,11 @@ class _HommePageState extends State<HommePage> {
                         onSelected: (value) async {
                           if (value == "deconnexion") {
                             await FirebaseAuth.instance.signOut();
-                            Navigator.of(context).pushReplacement((MaterialPageRoute(builder: (context)=> ConnexionPage())));
+                            Navigator.of(context).pushReplacement(
+                              (MaterialPageRoute(
+                                builder: (context) => ConnexionPage(),
+                              )),
+                            );
                           }
                         },
                         child: Iconcontainer(
@@ -136,13 +199,15 @@ class _HommePageState extends State<HommePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text( nom == null ? "nom non ajouter" : nom!,
+                                Text(
+                                  nom == null ? "nom non ajouter" : nom!,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text( email == null ? "non ajouté" : email!,
+                                Text(
+                                  email == null ? "non ajouté" : email!,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold,
@@ -206,10 +271,14 @@ class _HommePageState extends State<HommePage> {
             right: 10,
             bottom: 20,
             child: Mycontainerwideget(
+              hasPhoto: hasPhoto,
+              onPickPhoto: _pickPhoto,
+              onRemovePhoto: _removePhoto,
               controller: noteController,
               onPressed: () {
-                addPositionCar(context, noteController.text.trim());
+                addPositionCar(context, noteController.text.trim(), _image);
                 noteController.clear();
+                hasPhoto = false;
                 AwesomeDialog(
                   context: context,
                   dialogType: DialogType.success,

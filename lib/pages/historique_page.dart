@@ -182,7 +182,8 @@ class _HistoriquePageState extends State<HistoriquePage> {
                               ],
                             ),
                             SizedBox(height: 12),
-                            InkWell(
+                           Row(children: [
+                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -203,6 +204,24 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                 ),
                               ),
                             ),
+                             InkWell(
+                              onTap: () {
+                               
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(left: 48),
+                                child: Text(
+                                  "Télecharge la photo",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ),
+                           ],)
                           ],
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
+import 'package:mypost/pages/Authentification/forgotPasswordPage.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
 import 'package:mypost/colors.dart';
@@ -158,6 +159,19 @@ class _ConnexionPageState extends State<ConnexionPage> {
                          
                         },
                       ),
+                      Align(
+                        alignment: AlignmentGeometry.topRight,
+                        child: TextButton(
+                          onPressed: () {
+                           Navigator.push(
+                                   context,
+                                  MaterialPageRoute(builder: (_) => Forgotpasswordpage()),
+                              );
+                            },
+                           child: Text("Mot de passe oublié ?"),
+                            ),
+                      ),
+
 
                       const SizedBox(height: 18),
 

@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mypost/Provider/LocationProvider.dart';
@@ -33,12 +34,21 @@ class _SavelocationpageState extends State<Savelocationpage> {
   double carMinutes = 0;
   double bikeMinutes = 0;
 
+  static const String _googleApiKey = 'AIzaSyAkz1DacsVmmBnfQwMPk7BGubYxJm5hLM8';
+
+  final Set<Polyline> _polylines = {};
+  late final PolylinePoints _polylinePoints = PolylinePoints(
+    apiKey: _googleApiKey,
+  );
+
   GoogleMapController? mapController1;
   Set<Marker> markers = {};
 
-   void initState() {
+  void initState() {
     super.initState();
+    addMarker();
     calculDistance();
+    _tracerItineraire();
   }
 
   // fonction pour calculer la distance
@@ -61,24 +71,14 @@ class _SavelocationpageState extends State<Savelocationpage> {
     carMinutes = (distanceKm / 40) * 60;
     bikeMinutes = (distanceKm / 15) * 60;
 
-    setState(() {
-      
-    });
+    setState(() {});
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
     lat1 = context.watch<LocationProvider>().userLat;
     lang1 = context.watch<LocationProvider>().userLang;
-    markers = {
-      Marker(
-        markerId: MarkerId("user_position"),
-        position: LatLng(lat1, lang1),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      ),
-    };
+
     return Scaffold(
       body: Scaffold(
         body: Stack(
@@ -86,11 +86,13 @@ class _SavelocationpageState extends State<Savelocationpage> {
             GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(lat1, lang1),
+                zoom: 15,
               ),
               onMapCreated: (controller) => {mapController1 = controller},
 
               markers: markers,
               myLocationEnabled: true,
+              polylines: _polylines,
             ),
 
             SafeArea(
@@ -212,5 +214,58 @@ class _SavelocationpageState extends State<Savelocationpage> {
         ),
       ),
     );
+  }
+
+  // l'ajoute des marker
+  void addMarker() {
+    final lat = context.read<LocationProvider>().userLat;
+    final long = context.read<LocationProvider>().userLang;
+
+    markers = {
+      Marker(
+        markerId: MarkerId("user_position"),
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      ),
+
+      Marker(
+        markerId: MarkerId("car_position"),
+        position: LatLng(widget.lat, widget.long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      ),
+    };
+  }
+
+  Future<void> _tracerItineraire() async {
+    final lat = context.read<LocationProvider>().userLat;
+    final long = context.read<LocationProvider>().userLang;
+    PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
+      request: PolylineRequest(
+        origin: PointLatLng(widget.lat, widget.long),
+        destination: PointLatLng(lat, long),
+        mode: TravelMode.driving,
+      ),
+    );
+
+    if (result.points.isNotEmpty) {
+      final List<LatLng> coordonnees = result.points
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+
+      if (!mounted) return;
+
+      setState(() {
+        _polylines.add(
+          Polyline(
+            polylineId: const PolylineId('itineraire'),
+            points: coordonnees,
+            color: const Color(0xFF16281D),
+            width: 5,
+          ),
+        );
+      });
+    } else {
+      debugPrint('Erreur polyline : ${result.errorMessage}');
+    }
   }
 }

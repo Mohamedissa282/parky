@@ -18,7 +18,6 @@ class InscriptionPage extends StatefulWidget {
 }
 
 class _InscriptionPageState extends State<InscriptionPage> {
-
   GlobalKey<FormState> key = new GlobalKey();
   final TextEditingController nomController = new TextEditingController();
   final TextEditingController prenomController = new TextEditingController();
@@ -48,10 +47,19 @@ class _InscriptionPageState extends State<InscriptionPage> {
       context.read<UserProvider>().setNom(nomController.text.trim());
       context.read<UserProvider>().setEmail(emailController.text.trim());
 
-
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text(
+            "Votre compte à été créer avec sucées",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+      await Future.delayed(Duration(seconds: 2));
       Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );
@@ -76,7 +84,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15),
-            
+
                 Container(
                   width: 56,
                   height: 56,
@@ -91,7 +99,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   ),
                 ),
                 const SizedBox(height: 18),
-            
+
                 const Text(
                   'Créer votre compte',
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -102,7 +110,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 24),
-            
+
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -129,11 +137,11 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-            
+
                       TextformfieldWideget(
                         controller: nomController,
                         hintText: "Entrer votre nom",
-            
+
                         prefixIcon: Icon(Icons.person),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -142,11 +150,11 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         },
                       ),
                       const SizedBox(height: 14),
-            
+
                       TextformfieldWideget(
                         controller: emailController,
                         hintText: "med@gmail.com",
-            
+
                         prefixIcon: Icon(Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -158,45 +166,68 @@ class _InscriptionPageState extends State<InscriptionPage> {
                           if (!email) {
                             return "Email not valide";
                           }
-                        
                         },
                       ),
                       const SizedBox(height: 14),
                       TextformfieldWideget(
                         controller: passwordController,
-            
+
                         hintText: "••••••••",
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Veuillez entrer votre mot de passe";
                           }
-            
+
                           if (value.length < 4) {
                             return "Le mot de passe doit contenir au moins 4 caractères";
                           }
-            
-                          
                         },
                       ),
-            
+
                       const SizedBox(height: 18),
-            
-                      Mybutton(
-                        text: "Créer compte",
-                        onPressed: () {
-                          if(key.currentState!.validate()){
-                                 Registre();
-                          }
-                         
-                        },
+
+                      // Bouton Se connecter
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (key.currentState!.validate()) {
+                              Registre();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ParkyColors.darkGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: ParkyColors.limeGreen,
+                                  ),
+                                )
+                              : const Text(
+                                  'Créer un compte',
+                                  style: TextStyle(
+                                    color: ParkyColors.limeGreen,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                        ),
                       ),
                       const SizedBox(height: 12),
                     ],
                   ),
                 ),
                 const SizedBox(height: 35),
-            
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/pages/photoStatusRow.dart';
 
 class Mycontainerwideget extends StatelessWidget {
   final TextEditingController? controller;
   final void Function()? onPressed;
-  const Mycontainerwideget({super.key,required this.controller,required this.onPressed});
+  final  bool hasPhoto;
+  final void Function() onPickPhoto;
+  final void Function() onRemovePhoto;
+  const Mycontainerwideget({super.key,required this.controller,required this.onPressed, required this.hasPhoto, required this.onPickPhoto, required this.onRemovePhoto});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-              height: 200,
+              height: 250,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(18),
@@ -20,22 +24,16 @@ class Mycontainerwideget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Ou avez-vous garé votre voiture ?",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      "ajoute une note si tu veux, puis enregistrer",
+                      "Ajoutez une phto et note si vous voulez, puis enregistre",
                       style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
-                        fontSize: 13,
+                        fontSize: 15,
                       ),
                     ),
+                    SizedBox(height: 8),
+                    
+                    PhotoStatusRow(hasPhoto: hasPhoto, onPickPhoto: onPickPhoto, onRemovePhoto: onRemovePhoto),
                     SizedBox(height: 8),
                     TextFormField(
                       controller:controller ,
