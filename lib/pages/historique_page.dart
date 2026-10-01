@@ -19,6 +19,7 @@ class HistoriquePage extends StatefulWidget {
 }
 
 class _HistoriquePageState extends State<HistoriquePage> {
+  bool estLoading = false;
   Stream<QuerySnapshot> getCarSpots(String uui) {
     return FirebaseFirestore.instance
         .collection("users")
@@ -30,16 +31,36 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
   Future<void> downloadImage(String url) async {
     try {
+      setState(() {
+        estLoading = true;
+      });
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        final res = response.bodyBytes;
-        await Gal.putImage("${res}");
-        print("Image enregistrée dans la galerie !");
+        final bytes = response.bodyBytes;
+        await Gal.putImageBytes(bytes, album: "MonSpot");
+
+        setState(() {
+          estLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Photo enregistrée dans la galerie",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
       } else {
         print("Erreur téléchargement : ${response.statusCode}");
       }
+    } on GalException catch (e) {
+      print("Erreur Gal : ${e.type}");
     } catch (e) {
-      print("##########################################${e}");
+      print("Erreur : $e");
     }
   }
 
@@ -201,6 +222,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                             ),
                             SizedBox(height: 12),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 InkWell(
                                   onTap: () {
@@ -228,23 +250,42 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    downloadImage(image);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 48),
-                                    child: Text(
-                                      "Télecharge la photo",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline,
+
+                                (image == null || image.isEmpty)
+                                    ? Text(
+                                        "Aucune image",
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          downloadImage(image);
+                                        },
+                                        child: estLoading
+                                            ? const SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color:
+                                                          ParkyColors.limeGreen,
+                                                    ),
+                                              )
+                                            : Text(
+                                                "Télécharger la photo",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ],

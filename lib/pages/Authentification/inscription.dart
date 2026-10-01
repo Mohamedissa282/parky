@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mypost/Provider/UserProvider.dart';
+import 'package:mypost/Widget/awsome_dialog.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
@@ -64,8 +65,19 @@ class _InscriptionPageState extends State<InscriptionPage> {
       Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );
-    } catch (e) {
-      print("Erreur inscription : $e");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        ShowDialog(
+          context,
+          "Cet email est déjà utilisé. Connecte-toi à la place.",
+        );
+      } else if (e.code == 'invalid-email') {
+        ShowDialog(context, "L'adresse email n'est pas valide.");
+      } else if (e.code == 'weak-password') {
+        ShowDialog(context, "Mot de passe trop faible (6 caractères minimum).");
+      } else {
+        print("Erreur : ${e.code}");
+      }
       setState(() {
         _isLoading = false;
       });

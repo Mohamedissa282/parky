@@ -147,7 +147,7 @@ class _HommePageState extends State<HommePage> {
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: LatLng(lat1, lang1)),
+            initialCameraPosition: CameraPosition(target: LatLng(lat1, lang1), zoom: 15),
             onMapCreated: (controller) => {mapController1 = controller},
 
             markers: markers,

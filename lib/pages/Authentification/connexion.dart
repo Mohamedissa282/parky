@@ -1,7 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
+import 'package:mypost/Widget/awsome_dialog.dart';
 import 'package:mypost/pages/Authentification/forgotPasswordPage.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
@@ -44,14 +46,20 @@ class _ConnexionPageState extends State<ConnexionPage> {
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (context) => HommePage()));
-      Center(
-        child: LoadingAnimationWidget.twoRotatingArc(
-          color: Colors.white,
-          size: 200,
-        ),
-      );
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        ShowDialog(context, "Email ou mot de passe incorrect.");
+       
+      } else if (e.code == 'invalid-email') {
+        ShowDialog(context, "Adresse email invalide.");
+       
+        print('Adresse email invalide.');
+      } else if (e.code == 'user-disabled') {
+         ShowDialog(context, "Ce compte a été désactivé.");
+        
+      } else {
+        print('Erreur de connexion : ${e.code}');
+      }
       setState(() {
         _isLoading = false;
       });
@@ -146,7 +154,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                       const SizedBox(height: 14),
                       TextformfieldWideget(
                         controller: passwordController,
-                       obscureText: !_obscurePassword,
+                        obscureText: !_obscurePassword,
                         hintText: "mot de passe",
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -155,10 +163,9 @@ class _ConnexionPageState extends State<ConnexionPage> {
                                 : Icons.visibility_off,
                           ),
 
-                          onPressed: () { 
+                          onPressed: () {
                             setState(() {
-                            _obscurePassword = !_obscurePassword;
-                              
+                              _obscurePassword = !_obscurePassword;
                             });
                           },
                         ),
