@@ -9,7 +9,7 @@ import 'package:mypost/Widget/containerPageSaveLocation.dart';
 import 'package:mypost/Widget/myContainerWideget.dart';
 import 'package:mypost/colors.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 class Savelocationpage extends StatefulWidget {
   final double lat;
   final double long;
@@ -34,13 +34,12 @@ class _SavelocationpageState extends State<Savelocationpage> {
   double carMinutes = 0;
   double bikeMinutes = 0;
 
-  static const String _googleApiKey = 'AIzaSyAkz1DacsVmmBnfQwMPk7BGubYxJm5hLM8';
+  
 
-  final Set<Polyline> _polylines = {};
-  late final PolylinePoints _polylinePoints = PolylinePoints(
-    apiKey: _googleApiKey,
-  );
+final _googleApiKey = dotenv.env['API_KEY']; // idéalement à sortir du code en dur
 
+final Set<Polyline> _polylines = {};
+late final PolylinePoints _polylinePoints = PolylinePoints.enhanced("${_googleApiKey}");
   GoogleMapController? mapController1;
   Set<Marker> markers = {};
 
@@ -237,35 +236,39 @@ class _SavelocationpageState extends State<Savelocationpage> {
   }
 
   Future<void> _tracerItineraire() async {
-    final lat = context.read<LocationProvider>().userLat;
-    final long = context.read<LocationProvider>().userLang;
-    PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
-      request: PolylineRequest(
-        origin: PointLatLng(widget.lat, widget.long),
-        destination: PointLatLng(lat, long),
-        mode: TravelMode.driving,
-      ),
-    );
+  final lat = context.read<LocationProvider>().userLat;
+  final long = context.read<LocationProvider>().userLang;
 
-    if (result.points.isNotEmpty) {
-      final List<LatLng> coordonnees = result.points
-          .map((point) => LatLng(point.latitude, point.longitude))
-          .toList();
+  final RoutesApiResponse response = await _polylinePoints.getRouteBetweenCoordinatesV2(
+    request: RoutesApiRequest(
+      origin: PointLatLng(widget.lat, widget.long),
+      destination: PointLatLng(lat, long),
+      travelMode: TravelMode.driving,
+    ),
+  );
 
-      if (!mounted) return;
+  if (response.routes.isNotEmpty) {
+    // Convertit la réponse Routes API vers le format legacy PolylineResult
+    final result = _polylinePoints.convertToLegacyResult(response);
 
-      setState(() {
-        _polylines.add(
-          Polyline(
-            polylineId: const PolylineId('itineraire'),
-            points: coordonnees,
-            color: const Color(0xFF16281D),
-            width: 5,
-          ),
-        );
-      });
-    } else {
-      debugPrint('Erreur polyline : ${result.errorMessage}');
-    }
+    final List<LatLng> coordonnees = result.points
+        .map((point) => LatLng(point.latitude, point.longitude))
+        .toList();
+
+    if (!mounted) return;
+
+    setState(() {
+      _polylines.add(
+        Polyline(
+          polylineId: const PolylineId('itineraire'),
+          points: coordonnees,
+          color: const Color(0xFF16281D),
+          width: 5,
+        ),
+      );
+    });
+  } else {
+    debugPrint('##############################Erreur polyline : ${response.errorMessage}');
   }
+}
 }

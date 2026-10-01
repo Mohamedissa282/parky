@@ -19,7 +19,7 @@ class ConnexionPage extends StatefulWidget {
 class _ConnexionPageState extends State<ConnexionPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  bool _obscurePassword = false;
   bool _isLoading = false;
 
   GlobalKey<FormState> key = new GlobalKey();
@@ -126,6 +126,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                       const SizedBox(height: 20),
 
                       TextformfieldWideget(
+                        obscureText: false,
                         controller: emailController,
                         hintText: "med@gmail.com",
 
@@ -140,14 +141,27 @@ class _ConnexionPageState extends State<ConnexionPage> {
                           if (!email) {
                             return "Email not valide";
                           }
-                          
                         },
                       ),
                       const SizedBox(height: 14),
                       TextformfieldWideget(
                         controller: passwordController,
+                       obscureText: !_obscurePassword,
+                        hintText: "mot de passe",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
 
-                        hintText: "••••••••",
+                          onPressed: () { 
+                            setState(() {
+                            _obscurePassword = !_obscurePassword;
+                              
+                            });
+                          },
+                        ),
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -156,22 +170,22 @@ class _ConnexionPageState extends State<ConnexionPage> {
                           if (value.length < 4) {
                             return "Le mot de passe doit contenir au moins 4 caractères";
                           }
-                         
                         },
                       ),
                       Align(
                         alignment: AlignmentGeometry.topRight,
                         child: TextButton(
                           onPressed: () {
-                           Navigator.push(
-                                   context,
-                                  MaterialPageRoute(builder: (_) => Forgotpasswordpage()),
-                              );
-                            },
-                           child: Text("Mot de passe oublié ?"),
-                            ),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Forgotpasswordpage(),
+                              ),
+                            );
+                          },
+                          child: Text("Mot de passe oublié ?"),
+                        ),
                       ),
-
 
                       const SizedBox(height: 18),
 
@@ -180,7 +194,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                         width: double.infinity,
                         height: 52,
                         child: ElevatedButton(
-                          onPressed: (){
+                          onPressed: () {
                             if (key.currentState!.validate()) {
                               login();
                             }

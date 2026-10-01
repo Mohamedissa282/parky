@@ -7,15 +7,16 @@ class TextformfieldWideget extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+ final bool obscureText;
   final String? Function(String?)? validator;
   const TextformfieldWideget({super.key , required this.controller , required this.hintText, required this.prefixIcon,
-     this.suffixIcon, required this.validator
+     this.suffixIcon, required this.validator,required  this.obscureText
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
+      obscureText:obscureText,
       controller: controller,
       validator: validator,
       keyboardType: TextInputType.emailAddress,
@@ -23,6 +24,7 @@ class TextformfieldWideget extends StatelessWidget {
         hintText: hintText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon ,
+        
         filled: true,
         fillColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(vertical: 14),

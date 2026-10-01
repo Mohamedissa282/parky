@@ -16,11 +16,19 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
   final TextEditingController emailController = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey();
 
+  bool estLoading = false;
+
   Future<void> resetPassword() async {
     try {
+      setState(() {
+        estLoading = true;
+      });
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: emailController.text.trim(),
       );
+      setState(() {
+        estLoading = false;
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -31,8 +39,8 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
           ),
         ),
       );
-await Future.delayed(Duration(seconds: 2));
-       Navigator.of(context).pushReplacement(
+      await Future.delayed(Duration(seconds: 2));
+      Navigator.of(context).pushReplacement(
         (MaterialPageRoute(builder: (context) => ConnexionPage())),
       );
     } catch (e) {
@@ -48,7 +56,7 @@ await Future.delayed(Duration(seconds: 2));
       backgroundColor: ParkyColors.background,
       appBar: AppBar(
         backgroundColor: ParkyColors.background,
-        leading:  Padding(
+        leading: Padding(
           padding: const EdgeInsets.all(11.0),
           child: InkWell(
             onTap: () {
@@ -61,17 +69,32 @@ await Future.delayed(Duration(seconds: 2));
             ),
           ),
         ),
-        title: Text("Mot de passe oublié",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
-        
-        
-        )),
+        title: Text(
+          "Mot de passe oublié",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 50),
         child: Form(
           key: _key,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                "Veuilez saisir votre email, puis vérifier votre email.",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+
+              SizedBox(height: 15),
               TextFormField(
                 controller: emailController,
                 validator: (value) {
@@ -89,31 +112,60 @@ await Future.delayed(Duration(seconds: 2));
                 },
                 decoration: InputDecoration(
                   hintText: "Email",
-                  hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                  border: OutlineInputBorder(
-                     borderRadius: BorderRadius.circular(14),
-                     borderSide: const BorderSide(color: ParkyColors.borderGrey),
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
                   ),
-                enabledBorder: OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(color: ParkyColors.borderGrey),
                   ),
-               focusedBorder: OutlineInputBorder(
-                   borderRadius: BorderRadius.circular(14),
-                     borderSide: const BorderSide(color: ParkyColors.darkGreen),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(color: ParkyColors.borderGrey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(color: ParkyColors.darkGreen),
                   ),
                 ),
               ),
               SizedBox(height: 20),
 
-              Mybutton(text: "Réinitialiser le mot de passe", onPressed: (){
-                 if (_key.currentState!.validate()) {
-                    resetPassword();
-                   
-                    //Navigator.of(context).pop();
-                  }
-              })
-              
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_key.currentState!.validate()) {
+                      resetPassword();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ParkyColors.darkGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                  ),
+                  child: estLoading
+                      ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                      : Text(
+                          "Réinitialiser le mot de passe",
+                          style: TextStyle(
+                            color: ParkyColors.limeGreen,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                ),
+              ),
             ],
           ),
         ),

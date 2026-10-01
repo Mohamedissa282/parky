@@ -40,8 +40,10 @@ class _HommePageState extends State<HommePage> {
       setState(() {
         _image = File(pickedFile.path);
         hasPhoto = true;
-        print("################################################################""Photo sélectionnée : ${_image!.path}");
-
+        print(
+          "################################################################"
+          "Photo sélectionnée : ${_image!.path}",
+        );
       });
     }
   }
@@ -99,10 +101,9 @@ class _HommePageState extends State<HommePage> {
             "date": DateTime.now().toIso8601String(),
             "imageUrl": imageUrl,
           });
-      
+
       print("Voiture enregistrée avec ID : ${docs.id}");
       print("Image reçue dans addPositionCar: $image");
-
     } catch (e) {
       print(e);
     }
@@ -142,13 +143,11 @@ class _HommePageState extends State<HommePage> {
       ),
     };
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(lat1, lang1),
-              
-            ),
+            initialCameraPosition: CameraPosition(target: LatLng(lat1, lang1)),
             onMapCreated: (controller) => {mapController1 = controller},
 
             markers: markers,
@@ -266,28 +265,42 @@ class _HommePageState extends State<HommePage> {
             ),
           ),
 
-          Positioned(
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.easeOut,
             left: 10,
             right: 10,
-            bottom: 20,
+            bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
             child: Mycontainerwideget(
               hasPhoto: hasPhoto,
               onPickPhoto: _pickPhoto,
               onRemovePhoto: _removePhoto,
               controller: noteController,
               onPressed: () {
-                addPositionCar(context, noteController.text.trim(), _image);
-                noteController.clear();
-                hasPhoto = false;
                 AwesomeDialog(
                   context: context,
-                  dialogType: DialogType.success,
+                  dialogType: DialogType.info,
                   animType: AnimType.rightSlide,
-                  title: 'Succifily',
-                  desc:
-                      'Tres bien mohamed la postion a été enregisté avec succes',
+                  title: 'Enregistrement',
+                  desc: 'Voulez-vous enregistrer la postion ?',
+                  btnCancelText: "Non",
+                  btnCancelOnPress: (){},
+                  btnOkOnPress: () {
+                    addPositionCar(context, noteController.text.trim(), _image);
+                    noteController.clear();
+                    hasPhoto = false;
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.success,
+                      animType: AnimType.rightSlide,
+                      title: 'Succifily',
+                      desc:
+                          'Tres bien mohamed la postion a été enregisté avec succes',
 
-                  btnOkOnPress: () {},
+                      btnOkOnPress: () {},
+                    )..show();
+                  },
+                  btnOkText: "Oui",
                 )..show();
               },
             ),

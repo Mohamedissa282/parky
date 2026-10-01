@@ -25,6 +25,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
   final TextEditingController passwordController = new TextEditingController();
 
   bool _isLoading = false;
+  bool _obscurePassword = false;
   void Registre() async {
     try {
       setState(() {
@@ -141,7 +142,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       TextformfieldWideget(
                         controller: nomController,
                         hintText: "Entrer votre nom",
-
+                        obscureText: false,
                         prefixIcon: Icon(Icons.person),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -154,7 +155,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       TextformfieldWideget(
                         controller: emailController,
                         hintText: "med@gmail.com",
-
+                        obscureText: false,
                         prefixIcon: Icon(Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -171,8 +172,20 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       const SizedBox(height: 14),
                       TextformfieldWideget(
                         controller: passwordController,
-
-                        hintText: "••••••••",
+                        obscureText: !_obscurePassword,
+                        hintText: "mot de passe",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {

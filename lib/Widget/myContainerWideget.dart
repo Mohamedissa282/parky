@@ -24,7 +24,7 @@ class Mycontainerwideget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Ajoutez une phto et note si vous voulez, puis enregistre",
+                      "Ajoutez une photo et note si vous voulez, puis enregistre.",
                       style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,

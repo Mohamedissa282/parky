@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gal/gal.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/IconContainer.dart';
@@ -8,6 +9,7 @@ import 'package:mypost/colors.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/pages/SaveLocationPage.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class HistoriquePage extends StatefulWidget {
   const HistoriquePage({super.key});
@@ -24,6 +26,21 @@ class _HistoriquePageState extends State<HistoriquePage> {
         .collection("car_spots")
         .orderBy("date", descending: true)
         .snapshots();
+  }
+
+  Future<void> downloadImage(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final res = response.bodyBytes;
+        await Gal.putImage("${res}");
+        print("Image enregistrée dans la galerie !");
+      } else {
+        print("Erreur téléchargement : ${response.statusCode}");
+      }
+    } catch (e) {
+      print("##########################################${e}");
+    }
   }
 
   @override
@@ -86,6 +103,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
               final long = data['long'];
               final note = data['note'];
               final date = DateTime.parse(data['date']);
+              final image = data['imageUrl'];
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -182,46 +200,53 @@ class _HistoriquePageState extends State<HistoriquePage> {
                               ],
                             ),
                             SizedBox(height: 12),
-                           Row(children: [
-                             InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Savelocationpage(lat: lat, long:  long, date: "${date.day}/${date.month}/${date.year} à ${date.hour}:${date.minute}"),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 48),
-                                child: Text(
-                                  "Voir sur la carte",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                            ),
-                             InkWell(
-                              onTap: () {
-                               
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 48),
-                                child: Text(
-                                  "Télecharge la photo",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.underline,
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Savelocationpage(
+                                          lat: lat,
+                                          long: long,
+                                          date:
+                                              "${date.day}/${date.month}/${date.year} à ${date.hour}:${date.minute}",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 48),
+                                    child: Text(
+                                      "Voir sur la carte",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                InkWell(
+                                  onTap: () {
+                                    downloadImage(image);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 48),
+                                    child: Text(
+                                      "Télecharge la photo",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                           ],)
                           ],
                         ),
                       ),

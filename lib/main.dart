@@ -10,13 +10,14 @@ import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/pages/acceuilPage.dart';
 import 'package:mypost/pages/homme.dart';
 import 'package:mypost/pages/loading.dart';
+import 'package:mypost/pages/settingPage.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+ 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+   await dotenv.load(fileName: '.env');
   runApp(
     MultiProvider(
       providers: [
