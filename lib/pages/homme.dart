@@ -16,8 +16,10 @@ import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/Widget/myContainerWideget.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/pages/historique_page.dart' hide SafeArea;
+import 'package:mypost/pages/settingPage.dart';
 import 'package:provider/provider.dart';
 
 class HommePage extends StatefulWidget {
@@ -147,7 +149,10 @@ class _HommePageState extends State<HommePage> {
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: LatLng(lat1, lang1), zoom: 15),
+            initialCameraPosition: CameraPosition(
+              target: LatLng(lat1, lang1),
+           //  zoom: 11,
+            ),
             onMapCreated: (controller) => {mapController1 = controller},
 
             markers: markers,
@@ -177,61 +182,19 @@ class _HommePageState extends State<HommePage> {
                           iconColor: ParkyColors.limeGreen,
                         ),
                       ),
-                      PopupMenuButton(
-                        onSelected: (value) async {
-                          if (value == "deconnexion") {
-                            await FirebaseAuth.instance.signOut();
-                            Navigator.of(context).pushReplacement(
-                              (MaterialPageRoute(
-                                builder: (context) => ConnexionPage(),
-                              )),
-                            );
-                          }
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Settingpage(),
+                            ),
+                          );
                         },
                         child: Iconcontainer(
                           color: Colors.white,
                           icon: Icons.person,
                           iconColor: Colors.black,
                         ),
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  nom == null ? "nom non ajouter" : nom!,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  email == null ? "non ajouté" : email!,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: "deconnexion",
-                            child: Row(
-                              children: [
-                                Icon(Icons.logout, color: Colors.red[800]),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Se déconnecter",
-                                  style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -251,7 +214,7 @@ class _HommePageState extends State<HommePage> {
                         ),
                         SizedBox(width: 5),
                         Text(
-                          "Clique Ici",
+                           S.of(context).HommePage1,
                           style: TextStyle(
                             color: ParkyColors.limeGreen,
                             fontWeight: FontWeight.bold,
@@ -281,10 +244,10 @@ class _HommePageState extends State<HommePage> {
                   context: context,
                   dialogType: DialogType.info,
                   animType: AnimType.rightSlide,
-                  title: 'Enregistrement',
-                  desc: 'Voulez-vous enregistrer la postion ?',
-                  btnCancelText: "Non",
-                  btnCancelOnPress: (){},
+                  title:  S.of(context).HommePage2,
+                  desc: S.of(context).HommePage3,
+                  btnCancelText: S.of(context).HommePage4,
+                  btnCancelOnPress: () {},
                   btnOkOnPress: () {
                     addPositionCar(context, noteController.text.trim(), _image);
                     noteController.clear();
@@ -293,14 +256,14 @@ class _HommePageState extends State<HommePage> {
                       context: context,
                       dialogType: DialogType.success,
                       animType: AnimType.rightSlide,
-                      title: 'Succifily',
+                      title: S.of(context).HommePage5,
                       desc:
-                          'Tres bien mohamed la postion a été enregisté avec succes',
+                          S.of(context).HommePage6,
 
                       btnOkOnPress: () {},
                     )..show();
                   },
-                  btnOkText: "Oui",
+                  btnOkText: S.of(context).HommePage7,
                 )..show();
               },
             ),

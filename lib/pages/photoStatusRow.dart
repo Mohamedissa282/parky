@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypost/generated/l10n.dart';
 
 class PhotoStatusRow extends StatelessWidget {
   const PhotoStatusRow({
@@ -36,7 +37,7 @@ class PhotoStatusRow extends StatelessWidget {
               ),
               const SizedBox(width: 10),
                Text(
-                'Ajouter une photo (optionnel)',
+                 S.of(context).HommePage11,
                 style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ],
@@ -63,16 +64,16 @@ class PhotoStatusRow extends StatelessWidget {
             child: const Icon(Icons.check, size: 16, color: Color(0xFFC6F45A)),
           ),
           const SizedBox(width: 10),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Photo ajoutée',
+               S.of(context).HommePage12,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF16281D)),
             ),
           ),
           GestureDetector(
             onTap: onRemovePhoto,
-            child: const Text(
-              'Supprimer',
+            child:  Text(
+               S.of(context).HommePage13,
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,

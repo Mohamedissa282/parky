@@ -6,6 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/pages/SaveLocationPage.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
-              "Photo enregistrée dans la galerie",
+              S.of(context).EnregisPage1,
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -85,7 +86,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
           ),
         ),
         title: Text(
-          "Enregistrement",
+          S.of(context).EnregisPage2,
           style: TextStyle(
             color: Colors.black,
             fontSize: 23,
@@ -104,7 +105,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
           if (docs.isEmpty) {
             return Center(
               child: Text(
-                "Aucun enregistrement",
+                S.of(context).EnregisPage3,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -182,7 +183,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                         Text(
                                           note.toString().isNotEmpty
                                               ? note
-                                              : "Sans note",
+                                              : S.of(context).EnregisPage4,
                                           style: TextStyle(
                                             color: Colors.grey,
                                             fontSize: 14,
@@ -200,9 +201,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                       context: context,
                                       dialogType: DialogType.info,
                                       animType: AnimType.rightSlide,
-                                      title: 'Suppression',
+                                      title: S.of(context).EnregisPage5,
                                       desc:
-                                          'mohamed vous avez sur pour la suppression ?',
+                                          S.of(context).EnregisPage6,
                                       btnCancelOnPress: () {},
                                       btnOkOnPress: () {
                                         FirebaseFirestore.instance
@@ -212,8 +213,8 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                             .doc(doc.id)
                                             .delete();
                                       },
-                                      btnOkText: "Oui",
-                                      btnCancelText: "Non",
+                                      btnOkText: S.of(context).HommePage7,
+                                      btnCancelText: S.of(context).HommePage4,
                                     )..show();
                                   },
                                   icon: Icon(Icons.delete),
@@ -240,7 +241,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                   child: Container(
                                     margin: EdgeInsets.only(left: 48),
                                     child: Text(
-                                      "Voir sur la carte",
+                                      S.of(context).EnregisPage7,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -253,7 +254,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
                                 (image == null || image.isEmpty)
                                     ? Text(
-                                        "Aucune image",
+                                        S.of(context).EnregisPage8,
                                         style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -276,7 +277,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                                     ),
                                               )
                                             : Text(
-                                                "Télécharger la photo",
+                                                S.of(context).EnregisPage9,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,

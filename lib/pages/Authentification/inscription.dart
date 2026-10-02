@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/awsome_dialog.dart';
 import 'package:mypost/Widget/myButton.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
 import 'package:mypost/colors.dart';
@@ -69,12 +70,12 @@ class _InscriptionPageState extends State<InscriptionPage> {
       if (e.code == 'email-already-in-use') {
         ShowDialog(
           context,
-          "Cet email est déjà utilisé. Connecte-toi à la place.",
+          S.of(context).PageInscription15,
         );
       } else if (e.code == 'invalid-email') {
-        ShowDialog(context, "L'adresse email n'est pas valide.");
+        ShowDialog(context, S.of(context).PageInscription16);
       } else if (e.code == 'weak-password') {
-        ShowDialog(context, "Mot de passe trop faible (6 caractères minimum).");
+        ShowDialog(context, S.of(context).PageInscription17);
       } else {
         print("Erreur : ${e.code}");
       }
@@ -113,13 +114,13 @@ class _InscriptionPageState extends State<InscriptionPage> {
                 ),
                 const SizedBox(height: 18),
 
-                const Text(
-                  'Créer votre compte',
+                Text(
+                  S.of(context).PageInscription1,
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  "Votre voiture vous attend, on s'occupe du reste.",
+                Text(
+                 S.of(context).PageInscription2,
                   style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 24),
@@ -134,16 +135,16 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Inscription",
+                       Text(
+                       S.of(context).PageInscription3,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        "Quelques infos et c'est parti",
+                      Text(
+                       S.of(context).PageInscription4,
                         style: TextStyle(
                           color: ParkyColors.textGrey,
                           fontSize: 14,
@@ -153,12 +154,12 @@ class _InscriptionPageState extends State<InscriptionPage> {
 
                       TextformfieldWideget(
                         controller: nomController,
-                        hintText: "Entrer votre nom",
+                        hintText: S.of(context).PageInscription5,
                         obscureText: false,
                         prefixIcon: Icon(Icons.person),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Veuillez entrer votre nom";
+                            return S.of(context).PageInscription6;
                           }
                         },
                       ),
@@ -171,13 +172,13 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         prefixIcon: Icon(Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Veuillez entrer votre email";
+                            return S.of(context).PageInscription7;
                           }
                           bool email = RegExp(
                             r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
                           ).hasMatch(value);
                           if (!email) {
-                            return "Email not valide";
+                            return S.of(context).PageInscription8;
                           }
                         },
                       ),
@@ -201,11 +202,11 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Veuillez entrer votre mot de passe";
+                            return S.of(context).PageInscription9;
                           }
 
                           if (value.length < 4) {
-                            return "Le mot de passe doit contenir au moins 4 caractères";
+                            return S.of(context).PageInscription10;
                           }
                         },
                       ),
@@ -237,8 +238,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                                     color: ParkyColors.limeGreen,
                                   ),
                                 )
-                              : const Text(
-                                  'Créer un compte',
+                              :  Text(
+                                 S.of(context).PageInscription11,
                                   style: TextStyle(
                                     color: ParkyColors.limeGreen,
                                     fontWeight: FontWeight.bold,
@@ -256,8 +257,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Avez-vous déja compte ?',
+                    Text(
+                      S.of(context).PageInscription12,
                       style: TextStyle(color: ParkyColors.textGrey),
                     ),
                     InkWell(
@@ -268,8 +269,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                           )),
                         );
                       },
-                      child: const Text(
-                        'Se connecter',
+                      child: Text(
+                        S.of(context).PageInscription13,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,

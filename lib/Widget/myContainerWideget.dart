@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/photoStatusRow.dart';
 
 class Mycontainerwideget extends StatelessWidget {
@@ -24,7 +25,7 @@ class Mycontainerwideget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Ajoutez une photo et note si vous voulez, puis enregistre.",
+                      S.of(context).HommePage8,
                       style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -38,7 +39,7 @@ class Mycontainerwideget extends StatelessWidget {
                     TextFormField(
                       controller:controller ,
                       decoration: InputDecoration(
-                        hintText: "ex : Niveau 1, place 34",
+                        hintText:  S.of(context).HommePage9,
                         hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -61,7 +62,7 @@ class Mycontainerwideget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8),
-                    Mybutton(text: "Enregistrer", onPressed:onPressed ),
+                    Mybutton(text:  S.of(context).HommePage10, onPressed:onPressed ),
                   ],
                 ),
               ),

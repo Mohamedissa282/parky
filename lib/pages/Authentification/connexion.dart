@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mypost/Provider/UserProvider.dart';
 import 'package:mypost/Widget/awsome_dialog.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/forgotPasswordPage.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
 import 'package:mypost/Widget/textFormFieldWideget.dart';
@@ -48,14 +49,14 @@ class _ConnexionPageState extends State<ConnexionPage> {
       ).push(MaterialPageRoute(builder: (context) => HommePage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-credential') {
-        ShowDialog(context, "Email ou mot de passe incorrect.");
+        ShowDialog(context, S.of(context).PageConnexion12);
        
       } else if (e.code == 'invalid-email') {
-        ShowDialog(context, "Adresse email invalide.");
+        ShowDialog(context, S.of(context).PageConnexion13);
        
         print('Adresse email invalide.');
       } else if (e.code == 'user-disabled') {
-         ShowDialog(context, "Ce compte a été désactivé.");
+         ShowDialog(context, S.of(context).PageConnexion14);
         
       } else {
         print('Erreur de connexion : ${e.code}');
@@ -95,13 +96,12 @@ class _ConnexionPageState extends State<ConnexionPage> {
                 ),
                 const SizedBox(height: 27),
 
-                const Text(
-                  'Connectez-vous à Parky',
+                Text(S.of(context).PageConnexion1,
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  "Votre voiture vous attend, on s'occupe du reste.",
+                 Text(
+                  S.of(context).PageConnexion2,
                   style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 24),
@@ -116,16 +116,16 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Connexion',
+                      Text(
+                        S.of(context).PageConnexion3,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        'Connectez-vous pour retrouver votre voiture.',
+                      Text(
+                        S.of(context).PageConnexion4,
                         style: TextStyle(
                           color: ParkyColors.textGrey,
                           fontSize: 14,
@@ -141,13 +141,13 @@ class _ConnexionPageState extends State<ConnexionPage> {
                         prefixIcon: Icon(Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Veuillez entrer votre email";
+                            return S.of(context).PageConnexion5;
                           }
                           bool email = RegExp(
                             r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
                           ).hasMatch(value);
                           if (!email) {
-                            return "Email not valide";
+                            return S.of(context).PageConnexion15;
                           }
                         },
                       ),
@@ -172,10 +172,10 @@ class _ConnexionPageState extends State<ConnexionPage> {
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Veuillez entrer votre mot de passe";
+                            return S.of(context).PageConnexion6;
                           }
                           if (value.length < 4) {
-                            return "Le mot de passe doit contenir au moins 4 caractères";
+                            return S.of(context).PageConnexion7;
                           }
                         },
                       ),
@@ -190,7 +190,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                               ),
                             );
                           },
-                          child: Text("Mot de passe oublié ?"),
+                          child: Text(S.of(context).PageConnexion8),
                         ),
                       ),
 
@@ -221,8 +221,8 @@ class _ConnexionPageState extends State<ConnexionPage> {
                                     color: ParkyColors.limeGreen,
                                   ),
                                 )
-                              : const Text(
-                                  'Se connecter',
+                              : Text(
+                                  S.of(context).PageConnexion9,
                                   style: TextStyle(
                                     color: ParkyColors.limeGreen,
                                     fontWeight: FontWeight.bold,
@@ -240,8 +240,8 @@ class _ConnexionPageState extends State<ConnexionPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Pas encore de compte ?',
+                    Text(
+                      S.of(context).PageConnexion10,
                       style: TextStyle(color: ParkyColors.textGrey),
                     ),
                     InkWell(
@@ -252,8 +252,8 @@ class _ConnexionPageState extends State<ConnexionPage> {
                           )),
                         );
                       },
-                      child: const Text(
-                        'Créer un compte',
+                      child: Text(
+                       S.of(context).PageConnexion11,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,

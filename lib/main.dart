@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mypost/Provider/CarProvider.dart';
 import 'package:mypost/Provider/LocationProvider.dart';
 import 'package:mypost/Provider/UserProvider.dart';
+import 'package:mypost/Provider/languageProvider.dart';
 import 'package:mypost/firebase_options.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 import 'package:mypost/pages/Authentification/inscription.dart';
@@ -13,6 +14,8 @@ import 'package:mypost/pages/loading.dart';
 import 'package:mypost/pages/settingPage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/l10n.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
  
@@ -24,6 +27,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => CarProvider()),
+        ChangeNotifierProvider(create: (_)=> Languageprovider())
       ],
       child: const MyApp(),
     ),
@@ -38,9 +42,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: Provider.of<Languageprovider>(context).locale,
+      localizationsDelegates: [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: ConnexionPage());
+      home: Acceuilpage());
   }
 }
 

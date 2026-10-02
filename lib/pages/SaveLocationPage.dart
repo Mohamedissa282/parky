@@ -8,6 +8,7 @@ import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/Widget/containerPageSaveLocation.dart';
 import 'package:mypost/Widget/myContainerWideget.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 class Savelocationpage extends StatefulWidget {
@@ -150,14 +151,14 @@ late final PolylinePoints _polylinePoints = PolylinePoints.enhanced("${_googleAp
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Ma voiture",
+                                S.of(context).LocationPage1,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
                               Text(
-                                "garée le ${widget.date}",
+                                "${S.of(context).LocationPage2} ${widget.date}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13,
@@ -171,7 +172,7 @@ late final PolylinePoints _polylinePoints = PolylinePoints.enhanced("${_googleAp
                       SizedBox(height: 25),
 
                       Text(
-                        "La distance est ${distanceKm.toStringAsFixed(2)} km",
+                        "${S.of(context).LocationPage3} ${distanceKm.toStringAsFixed(2)} km",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -221,11 +222,11 @@ late final PolylinePoints _polylinePoints = PolylinePoints.enhanced("${_googleAp
     final long = context.read<LocationProvider>().userLang;
 
     markers = {
-      Marker(
+    /*  Marker(
         markerId: MarkerId("user_position"),
         position: LatLng(lat, long),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      ),
+      ),*/
 
       Marker(
         markerId: MarkerId("car_position"),

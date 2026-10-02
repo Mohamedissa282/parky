@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mypost/Widget/IconContainer.dart';
 import 'package:mypost/Widget/myButton.dart';
 import 'package:mypost/colors.dart';
+import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/connexion.dart';
 
 class Forgotpasswordpage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
         SnackBar(
           backgroundColor: Colors.green,
           content: Text(
-            "Email envoyé ! Vérifie ta boîte mail",
+            S.of(context).ChangePassword4,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
@@ -70,7 +71,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
           ),
         ),
         title: Text(
-          "Mot de passe oublié",
+          S.of(context).ChangePassword1,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -86,7 +87,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Veuilez saisir votre email, puis vérifier votre email.",
+               S.of(context).ChangePassword2,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
                 controller: emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "ajoutez votre email";
+                    return S.of(context).PageConnexion5;
                   }
 
                   bool email = RegExp(
@@ -107,7 +108,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
                   ).hasMatch(value);
 
                   if (!email) {
-                    return "Email non valide";
+                    return S.of(context).PageConnexion15;
                   }
                 },
                 decoration: InputDecoration(
@@ -157,7 +158,7 @@ class _ForgotpasswordpageState extends State<Forgotpasswordpage> {
                                   ),
                                 )
                       : Text(
-                          "Réinitialiser le mot de passe",
+                          S.of(context).ChangePassword3,
                           style: TextStyle(
                             color: ParkyColors.limeGreen,
                             fontWeight: FontWeight.bold,
