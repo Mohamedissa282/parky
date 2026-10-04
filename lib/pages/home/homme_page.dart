@@ -19,7 +19,7 @@ import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/connexion_page.dart';
 import 'package:mypost/pages/historique/historique_page.dart';
 
-import 'package:mypost/settings/setting_page.dart';
+import 'package:mypost/pages/settings/setting_page.dart';
 import 'package:provider/provider.dart';
 
 class HommePage extends StatefulWidget {
@@ -151,7 +151,7 @@ class _HommePageState extends State<HommePage> {
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: LatLng(lat1, lang1),
-           //  zoom: 11,
+            zoom: 15,
             ),
             onMapCreated: (controller) => {mapController1 = controller},
 

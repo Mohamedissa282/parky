@@ -12,7 +12,7 @@ import 'package:mypost/pages/Authentification/connexion_page.dart';
 import 'package:mypost/pages/Authentification/inscription_page.dart';
 import 'package:mypost/pages/Authentification/acceuil_page.dart';
 
-import 'package:mypost/settings/setting_page.dart';
+import 'package:mypost/pages/settings/setting_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

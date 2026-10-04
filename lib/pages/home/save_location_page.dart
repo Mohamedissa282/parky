@@ -222,11 +222,11 @@ late final PolylinePoints _polylinePoints = PolylinePoints.enhanced("${_googleAp
     final long = context.read<LocationProvider>().userLang;
 
     markers = {
-    /*  Marker(
+      Marker(
         markerId: MarkerId("user_position"),
         position: LatLng(lat, long),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      ),*/
+      ),
 
       Marker(
         markerId: MarkerId("car_position"),

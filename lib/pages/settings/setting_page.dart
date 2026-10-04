@@ -53,19 +53,19 @@ class _SettingpageState extends State<Settingpage> {
             Column(
               children: [
                 Container(
-                  height: 60,
-                  width: 60,
+                  height: 55,
+                  width: 55,
                   decoration: BoxDecoration(
                     color: ParkyColors.limeGreen,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Center(
                     child: Text(
-                      "${Provider.of<CarProvider>(context).UserName}",
+                      "${Provider.of<UserProvider>(context).UserName![0].toUpperCase()}",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 20,
                       ),
                     ),
                   ),
