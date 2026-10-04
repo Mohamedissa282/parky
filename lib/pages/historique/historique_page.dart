@@ -3,12 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:mypost/Provider/UserProvider.dart';
-import 'package:mypost/Widget/IconContainer.dart';
+import 'package:mypost/Provider/user_provider.dart';
+import 'package:mypost/Widget/Icon_container.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/Authentification/inscription.dart';
-import 'package:mypost/pages/SaveLocationPage.dart';
+import 'package:mypost/pages/Authentification/inscription_page.dart';
+import 'package:mypost/pages/home/save_location_page.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 

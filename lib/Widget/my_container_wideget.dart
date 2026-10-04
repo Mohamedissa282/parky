@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mypost/Widget/myButton.dart';
+import 'package:mypost/Widget/my_button.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/photoStatusRow.dart';
+import 'package:mypost/pages/home/photo_status_row.dart';
 
 class Mycontainerwideget extends StatelessWidget {
   final TextEditingController? controller;

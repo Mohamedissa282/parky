@@ -10,16 +10,16 @@ import 'package:flutter/widgets.dart' hide SafeArea;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mypost/Provider/LocationProvider.dart';
-import 'package:mypost/Provider/UserProvider.dart';
-import 'package:mypost/Widget/IconContainer.dart';
-import 'package:mypost/Widget/myButton.dart';
-import 'package:mypost/Widget/myContainerWideget.dart';
+import 'package:mypost/Provider/location_provider.dart';
+import 'package:mypost/Provider/user_provider.dart';
+import 'package:mypost/Widget/Icon_container.dart';
+import 'package:mypost/Widget/my_container_wideget.dart';
 import 'package:mypost/colors.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/Authentification/connexion.dart';
-import 'package:mypost/pages/historique_page.dart' hide SafeArea;
-import 'package:mypost/pages/settingPage.dart';
+import 'package:mypost/pages/Authentification/connexion_page.dart';
+import 'package:mypost/pages/historique/historique_page.dart';
+
+import 'package:mypost/settings/setting_page.dart';
 import 'package:provider/provider.dart';
 
 class HommePage extends StatefulWidget {

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mypost/Provider/languageProvider.dart';
-import 'package:mypost/Widget/IconContainer.dart';
+import 'package:mypost/Provider/car_provider.dart';
+import 'package:mypost/Provider/language_provider.dart';
+import 'package:mypost/Provider/user_provider.dart';
+import 'package:mypost/Widget/Icon_container.dart';
+
 import 'package:mypost/colors.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/Authentification/connexion.dart';
+import 'package:mypost/pages/Authentification/connexion_page.dart';
 import 'package:provider/provider.dart';
 
 class Settingpage extends StatefulWidget {
@@ -58,7 +61,7 @@ class _SettingpageState extends State<Settingpage> {
                   ),
                   child: Center(
                     child: Text(
-                      "MI",
+                      "${Provider.of<CarProvider>(context).UserName}",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -70,7 +73,7 @@ class _SettingpageState extends State<Settingpage> {
 
                 SizedBox(height: 8),
                 Text(
-                  "Mohamed Issa",
+                  "${Provider.of<UserProvider>(context).UserName}",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -79,7 +82,8 @@ class _SettingpageState extends State<Settingpage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "mohamed@gmail.com",
+                  "${Provider.of<UserProvider>(context).UserEmail}",
+
                   style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
@@ -131,14 +135,13 @@ class _SettingpageState extends State<Settingpage> {
                                       context,
                                     ).locale.languageCode ==
                                     "fr"
-                                ? Icon(Icons.check, color: Colors.green,)
+                                ? Icon(Icons.check, color: Colors.green)
                                 : null,
                             onTap: () {
                               Provider.of<Languageprovider>(
                                 context,
                                 listen: false,
                               ).changeLangue('fr');
-                              
                             },
                           ),
                           ListTile(
@@ -152,14 +155,13 @@ class _SettingpageState extends State<Settingpage> {
                                       context,
                                     ).locale.languageCode ==
                                     "en"
-                                ? Icon(Icons.check, color :Colors.green)
+                                ? Icon(Icons.check, color: Colors.green)
                                 : null,
                             onTap: () {
                               Provider.of<Languageprovider>(
                                 context,
                                 listen: false,
                               ).changeLangue('en');
-                              
                             },
                           ),
                         ],
@@ -169,11 +171,8 @@ class _SettingpageState extends State<Settingpage> {
                       InkWell(
                         onTap: () {
                           FirebaseAuth.instance.signOut();
-                          Navigator.of(context).pushReplacement(
-                            (MaterialPageRoute(
-                              builder: (context) => ConnexionPage(),
-                            )),
-                          );
+                           Navigator.of(context).popUntil((route) => route.isFirst);
+                         
                         },
                         child: Container(
                           height: 60,

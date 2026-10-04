@@ -6,7 +6,8 @@ class CarProvider extends ChangeNotifier {
   double? longCard;
   String? Carnote;
   String? Carid;
-
+  String? UserName;
+  String? emailUser;
   setPosition({
     required double lat,
     required double long,
@@ -18,6 +19,12 @@ class CarProvider extends ChangeNotifier {
     Carnote = note;
     Carid = id;
 
+    notifyListeners();
+  }
+
+  setInof(String name, String email) {
+    UserName = name;
+    emailUser = email;
     notifyListeners();
   }
 }

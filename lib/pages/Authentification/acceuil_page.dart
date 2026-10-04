@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mypost/Provider/languageProvider.dart';
-import 'package:mypost/Widget/myButton.dart';
+import 'package:mypost/Provider/language_provider.dart';
+import 'package:mypost/Widget/my_button.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/Authentification/connexion.dart';
+import 'package:mypost/pages/Authentification/connexion_page.dart';
 import 'package:provider/provider.dart';
 
 class Acceuilpage extends StatefulWidget {

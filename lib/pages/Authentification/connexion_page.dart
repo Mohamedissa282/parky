@@ -1,87 +1,67 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mypost/Provider/UserProvider.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:mypost/Provider/car_provider.dart';
+import 'package:mypost/Provider/user_provider.dart';
 import 'package:mypost/Widget/awsome_dialog.dart';
-import 'package:mypost/Widget/myButton.dart';
+import 'package:mypost/Widget/text_form_field_wideget.dart';
 import 'package:mypost/generated/l10n.dart';
-import 'package:mypost/pages/Authentification/connexion.dart';
-import 'package:mypost/Widget/textFormFieldWideget.dart';
+import 'package:mypost/pages/Authentification/forgot_password_page.dart';
+import 'package:mypost/pages/Authentification/inscription_page.dart';
+
 import 'package:mypost/colors.dart';
-import 'package:mypost/pages/historique_page.dart';
+import 'package:mypost/pages/home/homme_page.dart';
+
 import 'package:provider/provider.dart';
 
-class InscriptionPage extends StatefulWidget {
-  const InscriptionPage({super.key});
+class ConnexionPage extends StatefulWidget {
+  const ConnexionPage({super.key});
 
   @override
-  State<InscriptionPage> createState() => _InscriptionPageState();
+  State<ConnexionPage> createState() => _ConnexionPageState();
 }
 
-class _InscriptionPageState extends State<InscriptionPage> {
-  GlobalKey<FormState> key = new GlobalKey();
-  final TextEditingController nomController = new TextEditingController();
-  final TextEditingController prenomController = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
-
-  bool _isLoading = false;
+class _ConnexionPageState extends State<ConnexionPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool _obscurePassword = false;
-  void Registre() async {
+  bool _isLoading = false;
+
+  GlobalKey<FormState> key = new GlobalKey();
+
+  void login() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      UserCredential cred = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
 
-      String uid = cred.user!.uid;
 
-      await FirebaseFirestore.instance.collection("users").doc(uid).set({
-        "nom": nomController.text.trim(),
-        "prenom": prenomController.text.trim(),
-        "createdAt": FieldValue.serverTimestamp(),
-      });
-
-      context.read<UserProvider>().setNom(nomController.text.trim());
-      context.read<UserProvider>().setEmail(emailController.text.trim());
-
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green,
-          content: Text(
-            "Votre compte à été créer avec sucées",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.of(context).pushReplacement(
-        (MaterialPageRoute(builder: (context) => ConnexionPage())),
-      );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        ShowDialog(
-          context,
-          S.of(context).PageInscription15,
-        );
+      if (e.code == 'invalid-credential') {
+        ShowDialog(context, S.of(context).PageConnexion12);
       } else if (e.code == 'invalid-email') {
-        ShowDialog(context, S.of(context).PageInscription16);
-      } else if (e.code == 'weak-password') {
-        ShowDialog(context, S.of(context).PageInscription17);
+        ShowDialog(context, S.of(context).PageConnexion13);
+
+        print('Adresse email invalide.');
+      } else if (e.code == 'user-disabled') {
+        ShowDialog(context, S.of(context).PageConnexion14);
       } else {
-        print("Erreur : ${e.code}");
+        print('Erreur de connexion : ${e.code}');
       }
       setState(() {
         _isLoading = false;
       });
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -97,7 +77,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 15),
+                const SizedBox(height: 30),
 
                 Container(
                   width: 56,
@@ -112,15 +92,15 @@ class _InscriptionPageState extends State<InscriptionPage> {
                     size: 28,
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 27),
 
                 Text(
-                  S.of(context).PageInscription1,
+                  S.of(context).PageConnexion1,
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                 S.of(context).PageInscription2,
+                  S.of(context).PageConnexion2,
                   style: TextStyle(color: ParkyColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 24),
@@ -135,8 +115,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
-                       S.of(context).PageInscription3,
+                      Text(
+                        S.of(context).PageConnexion3,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -144,7 +124,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                       S.of(context).PageInscription4,
+                        S.of(context).PageConnexion4,
                         style: TextStyle(
                           color: ParkyColors.textGrey,
                           fontSize: 14,
@@ -153,32 +133,20 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       const SizedBox(height: 20),
 
                       TextformfieldWideget(
-                        controller: nomController,
-                        hintText: S.of(context).PageInscription5,
                         obscureText: false,
-                        prefixIcon: Icon(Icons.person),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).PageInscription6;
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 14),
-
-                      TextformfieldWideget(
                         controller: emailController,
                         hintText: "med@gmail.com",
-                        obscureText: false,
+
                         prefixIcon: Icon(Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return S.of(context).PageInscription7;
+                            return S.of(context).PageConnexion5;
                           }
                           bool email = RegExp(
                             r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
                           ).hasMatch(value);
                           if (!email) {
-                            return S.of(context).PageInscription8;
+                            return S.of(context).PageConnexion15;
                           }
                         },
                       ),
@@ -193,6 +161,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
+
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
@@ -202,13 +171,26 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         prefixIcon: Icon(Icons.lock_outline),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return S.of(context).PageInscription9;
+                            return S.of(context).PageConnexion6;
                           }
-
                           if (value.length < 4) {
-                            return S.of(context).PageInscription10;
+                            return S.of(context).PageConnexion7;
                           }
                         },
+                      ),
+                      Align(
+                        alignment: AlignmentGeometry.topRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Forgotpasswordpage(),
+                              ),
+                            );
+                          },
+                          child: Text(S.of(context).PageConnexion8),
+                        ),
                       ),
 
                       const SizedBox(height: 18),
@@ -220,7 +202,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (key.currentState!.validate()) {
-                              Registre();
+                              login();
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -238,8 +220,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                                     color: ParkyColors.limeGreen,
                                   ),
                                 )
-                              :  Text(
-                                 S.of(context).PageInscription11,
+                              : Text(
+                                  S.of(context).PageConnexion9,
                                   style: TextStyle(
                                     color: ParkyColors.limeGreen,
                                     fontWeight: FontWeight.bold,
@@ -258,19 +240,19 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      S.of(context).PageInscription12,
+                      S.of(context).PageConnexion10,
                       style: TextStyle(color: ParkyColors.textGrey),
                     ),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           (MaterialPageRoute(
-                            builder: (context) => ConnexionPage(),
+                            builder: (context) => InscriptionPage(),
                           )),
                         );
                       },
                       child: Text(
-                        S.of(context).PageInscription13,
+                        S.of(context).PageConnexion11,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
@@ -279,7 +261,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+               
               ],
             ),
           ),
