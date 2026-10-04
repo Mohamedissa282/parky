@@ -1,0 +1,10 @@
+----------------Ce qu'il reste à faire pour que l'app soit pret-------------
+
+
+1- Adaptation pour tous les appareils mobiles avec ( MediaQuery)
+
+2- Affichage message erreur en cas d'absence de connexion
+
+3- Amelioration page affiche polyline
+
+4- Tests
