@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mypost/Provider/car_provider.dart';
 import 'package:mypost/Provider/language_provider.dart';
 import 'package:mypost/Provider/location_provider.dart';
+import 'package:mypost/Provider/onboarding_provider.dart';
 import 'package:mypost/Provider/user_provider.dart';
 
 import 'package:mypost/firebase_options.dart';
@@ -24,6 +25,7 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env');
+
   final prefs = await SharedPreferences.getInstance();
   final dejaVu = prefs.getBool('a_vu_onboarding') ?? false;
   runApp(
@@ -34,9 +36,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => CarProvider()),
         ChangeNotifierProvider(create: (_) => Languageprovider()),
+        ChangeNotifierProvider(create: (_)=> OnboardingProvider(dejaVu))
       ],
       child:  MyApp(
-        dejaVuOnboarding: dejaVu
+       
       ),
     ),
   );
@@ -45,8 +48,8 @@ void main() async {
 final user = FirebaseAuth.instance.currentUser;
 
 class MyApp extends StatelessWidget {
-  final bool dejaVuOnboarding;
-  const MyApp({super.key , required this.dejaVuOnboarding});
+ 
+  const MyApp({super.key });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Authgate(dejaVuOnboarding: dejaVuOnboarding)
+      home: Authgate()
     );
   }
 }

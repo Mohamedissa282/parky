@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mypost/Provider/language_provider.dart';
+import 'package:mypost/Provider/onboarding_provider.dart';
 import 'package:mypost/Widget/my_button.dart';
 import 'package:mypost/generated/l10n.dart';
 import 'package:mypost/pages/Authentification/connexion_page.dart';
@@ -42,15 +43,18 @@ class _AcceuilpageState extends State<Acceuilpage> {
                           context,
                         ).locale.languageCode ==
                         "fr"
-                    ? Icon(Icons.check,color :Colors.green)
+                    ? Icon(Icons.check, color: Colors.green)
                     : null,
                 onTap: () {
-                  Provider.of<Languageprovider>(context, listen: false).changeLangue('fr');
+                  Provider.of<Languageprovider>(
+                    context,
+                    listen: false,
+                  ).changeLangue('fr');
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading:  Icon(Icons.language),
+                leading: Icon(Icons.language),
                 title: Text(
                   S.of(context).AccueilPage3,
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -60,14 +64,14 @@ class _AcceuilpageState extends State<Acceuilpage> {
                           context,
                         ).locale.languageCode ==
                         "en"
-                    ? Icon(Icons.check,color :Colors.green)
+                    ? Icon(Icons.check, color: Colors.green)
                     : null,
                 onTap: () {
                   Provider.of<Languageprovider>(
                     context,
                     listen: false,
                   ).changeLangue('en');
-                   Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -89,8 +93,8 @@ class _AcceuilpageState extends State<Acceuilpage> {
                 children: [
                   const SizedBox(height: 33),
                   Lottie.asset('images/animation.json'),
-                   SizedBox(height: 70),
-                   Center(
+                  SizedBox(height: 70),
+                  Center(
                     child: Text(
                       S.of(context).AccueilPage4,
                       style: TextStyle(
@@ -100,8 +104,8 @@ class _AcceuilpageState extends State<Acceuilpage> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 11),
-                   Text(
+                  SizedBox(height: 11),
+                  Text(
                     S.of(context).AccueilPage5,
                     style: TextStyle(
                       color: Colors.grey,
@@ -113,11 +117,7 @@ class _AcceuilpageState extends State<Acceuilpage> {
                   Mybutton(
                     text: S.of(context).AccueilPage6,
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => ConnexionPage(),
-                        ),
-                      );
+                      context.read<OnboardingProvider>().marquerCommeVu();
                     },
                   ),
                 ],

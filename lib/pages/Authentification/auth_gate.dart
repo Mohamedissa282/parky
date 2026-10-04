@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:mypost/Provider/onboarding_provider.dart';
 import 'package:mypost/Provider/user_provider.dart';
 import 'package:mypost/pages/Authentification/connexion_page.dart';
 import 'package:mypost/pages/Authentification/acceuil_page.dart';
@@ -11,13 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Authgate extends StatelessWidget {
-  final bool dejaVuOnboarding;
-  const Authgate({super.key, required this.dejaVuOnboarding});
+  const Authgate({super.key});
 
-  Future<void> _marquerCommeVu() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('a_vu_onboarding', true);
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class Authgate extends StatelessWidget {
                 .doc(user.uid)
                 .get();
 
-            if (!context.mounted) return; 
+            if (!context.mounted) return;
 
             final nom = docs.data()?['nom'] ?? '';
 
@@ -48,12 +45,14 @@ class Authgate extends StatelessWidget {
             context.read<UserProvider>().setEmail(user.email ?? '');
             context.read<UserProvider>().setNom(nom);
 
-            await _marquerCommeVu();
+           
           });
           return const HommePage();
         }
 
-        return dejaVuOnboarding ? const ConnexionPage() : const Acceuilpage();
+        final dejaVu = context.watch<OnboardingProvider>().dejaVu;
+
+      return  dejaVu ? const ConnexionPage() : const Acceuilpage();
       },
     );
   }
