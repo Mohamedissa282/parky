@@ -21,32 +21,55 @@
 
 # Captures d'écran
 
-### Connexion
-<img src="screenshots/login_screen.jpg" width="250" alt="Connexion">
-
-### Création de compte
-<img src="screenshots/register_screen.jpg" width="250" alt="Création de compte">
-
-### Accueil
-<img src="screenshots/home_screen.jpg" width="250" alt="Accueil">
-
-### Enregistrement d'un stationnement
-<img src="screenshots/parking_form.jpg" width="250" alt="Enregistrement d'un stationnement">
-
-### Informations du stationnement
-<img src="screenshots/parking_details.jpg" width="250" alt="Informations du stationnement">
-
-### Ajout d'une photo du véhicule
-<img src="screenshots/upload_vehicle_photo.jpg" width="250" alt="Ajout d'une photo">
-
-### Stationnement enregistré avec succès
-<img src="screenshots/parking_saved_success.jpg" width="250" alt="Stationnement enregistré">
-
-### Localisation du véhicule
-<img src="screenshots/vehicle_location_screen.jpg" width="250" alt="Localisation du véhicule">
-
-### Paramètres
-<img src="screenshots/settings_screen.jpg" width="250" alt="Paramètres">
+<table align="center">
+  <tr>
+    <td align="center">
+      <b>Connexion</b><br>
+      <img src="screenshots/login_screen.jpg" width="250" alt="Connexion">
+    </td>
+    <td align="center">
+      <b>Création de compte</b><br>
+      <img src="screenshots/register_screen.jpg" width="250" alt="Création de compte">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Accueil</b><br>
+      <img src="screenshots/home_screen.jpg" width="250" alt="Accueil">
+    </td>
+    <td align="center">
+      <b>Enregistrement d'un stationnement</b><br>
+      <img src="screenshots/parking_form.jpg" width="250" alt="Enregistrement d'un stationnement">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Informations du stationnement</b><br>
+      <img src="screenshots/parking_details.jpg" width="250" alt="Informations du stationnement">
+    </td>
+    <td align="center">
+      <b>Ajout d'une photo du véhicule</b><br>
+      <img src="screenshots/upload_vehicle_photo.jpg" width="250" alt="Ajout d'une photo">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Stationnement enregistré avec succès</b><br>
+      <img src="screenshots/parking_saved_success.jpg" width="250" alt="Stationnement enregistré">
+    </td>
+    <td align="center">
+      <b>Localisation du véhicule</b><br>
+      <img src="screenshots/vehicle_location_screen.jpg" width="250" alt="Localisation du véhicule">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Paramètres</b><br>
+      <img src="screenshots/settings_screen.jpg" width="250" alt="Paramètres">
+    </td>
+    <td></td>
+  </tr>
+</table>
 
 
 # 👨‍💻 Auteur
