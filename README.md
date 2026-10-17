@@ -22,31 +22,31 @@
 # Captures d'écran
 
 ### Connexion
-![Connexion](screenshots/login_screen.jpg)
+<img src="screenshots/login_screen.jpg" width="250" alt="Connexion">
 
 ### Création de compte
-![Création de compte](screenshots/register_screen.jpg)
+<img src="screenshots/register_screen.jpg" width="250" alt="Création de compte">
 
 ### Accueil
-![Accueil](screenshots/home_screen.jpg)
+<img src="screenshots/home_screen.jpg" width="250" alt="Accueil">
 
 ### Enregistrement d'un stationnement
-![Enregistrement d'un stationnement](screenshots/parking_form.jpg)
+<img src="screenshots/parking_form.jpg" width="250" alt="Enregistrement d'un stationnement">
 
 ### Informations du stationnement
-![Informations du stationnement](screenshots/parking_details.jpg)
+<img src="screenshots/parking_details.jpg" width="250" alt="Informations du stationnement">
 
 ### Ajout d'une photo du véhicule
-![Ajout d'une photo](screenshots/upload_vehicle_photo.jpg)
+<img src="screenshots/upload_vehicle_photo.jpg" width="250" alt="Ajout d'une photo">
 
 ### Stationnement enregistré avec succès
-![Stationnement enregistré](screenshots/parking_saved_success.jpg)
+<img src="screenshots/parking_saved_success.jpg" width="250" alt="Stationnement enregistré">
 
 ### Localisation du véhicule
-![Localisation du véhicule](screenshots/vehicle_location_screen.jpg)
+<img src="screenshots/vehicle_location_screen.jpg" width="250" alt="Localisation du véhicule">
 
 ### Paramètres
-![Paramètres](screenshots/settings_screen.jpg)
+<img src="screenshots/settings_screen.jpg" width="250" alt="Paramètres">
 
 
 # 👨‍💻 Auteur
