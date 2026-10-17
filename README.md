@@ -1,7 +1,7 @@
 # Parky
  Application mobile Flutter permettant d'enregistrer l'emplacement d'un véhicule avec une photo afin de le retrouver facilement.
 
-# ✨ Fonctionnalités
+# Fonctionnalités
 - Enregistrement de la position du véhicule
 - Ajout d'une photo du véhicule
 - Historique des stationnements
